@@ -9,14 +9,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     stack_widgets = new QStackedWidget(this);
     authorization = new Authorization(this);
+    table_upload_window = new TableUploadWindow(this);
     menu = new Menu(this);
 
     stack_widgets->addWidget(authorization);
     stack_widgets->addWidget(menu);
+    stack_widgets->addWidget(table_upload_window);
 
     setCentralWidget(stack_widgets);
 
     connect(authorization, &Authorization::send_to_main_window, this, &MainWindow::get_from_authorization_window);
+    connect(menu, &Menu::send_to_upload_window, this, &MainWindow::get_from_menu_to_upload_window);
     stack_widgets->setCurrentIndex(0);
 }
 
@@ -36,4 +39,9 @@ void MainWindow::get_from_authorization_window()
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
 
+}
+
+void MainWindow::get_from_menu_to_upload_window()
+{
+    stack_widgets->setCurrentIndex(2);
 }

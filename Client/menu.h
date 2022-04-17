@@ -16,8 +16,13 @@ public:
     explicit Menu(QWidget *parent = nullptr);
     ~Menu();
 
+
+signals:
+    void send_to_upload_window();
 private slots:
     void resizeEvent(QResizeEvent *event);
+
+    void on_pushButton_1_clicked();
 
 private:
     Ui::Menu *ui;

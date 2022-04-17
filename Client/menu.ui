@@ -10,6 +10,12 @@
     <height>640</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>640</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -24,6 +30,18 @@
      <width>800</width>
      <height>640</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>800</width>
+     <height>640</height>
+    </size>
    </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
@@ -55,6 +73,9 @@
        <height>50</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{background-color: rgb(47, 47, 47); color: rgb(255, 255, 255);border-radius: 15px; font-weight:600  px; font-size: 14px}</string>
+     </property>
      <property name="text">
       <string>Окно загрузки таблиц</string>
      </property>
@@ -68,11 +89,14 @@
        <height>50</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{background-color: rgb(47, 47, 47); color: rgb(255, 255, 255);border-radius: 15px; font-weight:600  px; font-size: 14px}</string>
+     </property>
      <property name="text">
       <string>Настройки</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_4">
+    <widget class="QPushButton" name="pushButton_2">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -81,29 +105,19 @@
        <height>50</height>
       </rect>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{background-color: rgb(47, 47, 47); color: rgb(255, 255, 255);border-radius: 15px; font-weight:600  px; font-size: 14px}</string>
+     </property>
      <property name="text">
       <string>Окно анализа</string>
      </property>
     </widget>
-   </widget>
-   <widget class="QFrame" name="panel_frame">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>64</y>
-      <width>460</width>
-      <height>540</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QFrame{background-color: rgb(0, 255, 127)}</string>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
    </widget>
   </widget>
  </widget>

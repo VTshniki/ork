@@ -18,8 +18,8 @@
     <rect>
      <x>20</x>
      <y>50</y>
-     <width>261</width>
-     <height>551</height>
+     <width>260</width>
+     <height>550</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -28,14 +28,79 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
+   <widget class="QListWidget" name="file_names_list">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>50</y>
+      <width>256</width>
+      <height>450</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_3">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>500</y>
+      <width>260</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QPushButton" name="file_delete_button">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>0</y>
+       <width>130</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Удалить из списка</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="file_select_button">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>130</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Добавить файлы</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>260</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Загруженные файлы</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QFrame" name="frame_2">
    <property name="geometry">
     <rect>
      <x>320</x>
      <y>50</y>
-     <width>461</width>
-     <height>441</height>
+     <width>450</width>
+     <height>550</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -44,6 +109,16 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
+   <widget class="QTableView" name="upload_files_tableView">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>450</width>
+      <height>500</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>
