@@ -12,3 +12,8 @@ TableAnalisysWindow::~TableAnalisysWindow()
 {
     delete ui;
 }
+
+void TableAnalisysWindow::resizeEvent(QResizeEvent *event)
+{
+
+}

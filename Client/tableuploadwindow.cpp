@@ -44,7 +44,6 @@ void TableUploadWindow::choose_files()
     if(acceptCode == QDialog::Accepted) {
         QStringList lines = menuDialog->selectedFiles();
         add_lines(lines);
-        //qDebug() << lines; // для проверки пути файла
     }
 }
 
@@ -105,7 +104,6 @@ void TableUploadWindow::on_item_is_clicked(QListWidgetItem *item)
         // Считываем данные до конца файла
         while (!in.atEnd())
         {
-            // ... построчно
             QString line = in.readLine();
             if(cur_line == 0){
                 for (int i = 0; i < line.length(); i++){
@@ -153,8 +151,40 @@ void TableUploadWindow::add_lines(QStringList lines)
                 }
             }
 
-            if(isAlreadyExist)
+            if(isAlreadyExist){
                 ui->file_names_list->addItem(lines[i]);
+                this->list_of_upload_file_path << lines[i];
+                //qDebug() << lines; // для проверки пути файла
+            }
     }
+}
+
+QStringList TableUploadWindow::get_list_of_upload_file_path()
+{
+    return this->list_of_upload_file_path;
+}
+
+void TableUploadWindow::set_list_of_upload_file_path(QStringList list)
+{
+    this->list_of_upload_file_path = list;
+}
+
+void TableUploadWindow::add_saved_files()
+{
+    for(int i = 0; i < this->list_of_upload_file_path.length(); i++){
+        ui->file_names_list->addItem(this->list_of_upload_file_path[i]);
+    }
+}
+
+void TableUploadWindow::resizeEvent(QResizeEvent *event)
+{
+    if(event->size().width() < 1000){
+        this->ui->frame_2->resize(event->size().width()*0.5625, event->size().height()*0.85);
+    }
+    else{
+        this->ui->frame_2->resize(event->size().width()*0.75, event->size().height()*0.85);
+    }
+    this->ui->upload_files_tableView->resize(this->ui->frame_2->size().width(), this->ui->frame_2->size().height());
+
 }
 

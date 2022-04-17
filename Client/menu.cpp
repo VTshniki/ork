@@ -32,3 +32,9 @@ void Menu::on_pushButton_1_clicked()
     emit send_to_upload_window();
 }
 
+
+void Menu::on_pushButton_2_clicked()
+{
+    emit send_to_analisys_window();
+}
+

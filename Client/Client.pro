@@ -13,6 +13,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     menu.cpp \
+    serializationclass.cpp \
     tableanalisyswindow.cpp \
     tableuploadwindow.cpp
 
@@ -20,6 +21,7 @@ HEADERS += \
     authorization.h \
     mainwindow.h \
     menu.h \
+    serializationclass.h \
     tableanalisyswindow.h \
     tableuploadwindow.h
 

@@ -2,6 +2,7 @@
 #define TABLEANALISYSWINDOW_H
 
 #include <QWidget>
+#include <QResizeEvent>
 
 namespace Ui {
 class TableAnalisysWindow;
@@ -14,6 +15,8 @@ class TableAnalisysWindow : public QWidget
 public:
     explicit TableAnalisysWindow(QWidget *parent = nullptr);
     ~TableAnalisysWindow();
+private slots:
+    void resizeEvent(QResizeEvent *event);
 
 private:
     Ui::TableAnalisysWindow *ui;

@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "serializationclass.h"
 
 #include <QApplication>
 
