@@ -34,15 +34,21 @@ void SerializationClass::upload_information()
 
     //загрузка информации об ранее добавленных файлах
     QFile file_list_of_upload_files_path("SavedTables\\listUploadedFilePaths.txt");
-    QString line;
+    QString line, line2;
     if(file_list_of_upload_files_path.open(QFile::ReadOnly | QFile::Text)){
         while (!file_list_of_upload_files_path.atEnd())
         {
             line = file_list_of_upload_files_path.readLine();
-            line.resize(line.length()-1);
-            this->list_of_upload_file_path << line;
+            for(int i = 0; i < line.length(); i++){
+                if(line[i] != '\n'){
+                    line2 += line[i];
+                }
+                else break;
+            }
+            this->list_of_upload_file_path << line2;
             //qDebug() << line; //проверка чтения
             line = "";
+            line2 = "";
         }
         file_list_of_upload_files_path.close();
     }

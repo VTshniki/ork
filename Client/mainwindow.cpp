@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(authorization, &Authorization::send_to_main_window, this, &MainWindow::get_from_authorization_window);
     connect(menu, &Menu::send_to_upload_window, this, &MainWindow::get_from_menu_to_upload_window);
     connect(menu, &Menu::send_to_analisys_window, this, &MainWindow::get_from_menu_to_analisys_window);
+    connect(table_upload_window, &TableUploadWindow::send_to_main_window, this, &MainWindow::get_from_upload_window_to_menu);
     stack_widgets->setCurrentIndex(0);
 }
 
@@ -60,4 +61,9 @@ void MainWindow::get_from_menu_to_upload_window()
 void MainWindow::get_from_menu_to_analisys_window()
 {
     stack_widgets->setCurrentIndex(3);
+}
+
+void MainWindow::get_from_upload_window_to_menu()
+{
+    stack_widgets->setCurrentIndex(1);
 }

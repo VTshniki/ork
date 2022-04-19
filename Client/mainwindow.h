@@ -30,6 +30,7 @@ public slots:
     void resizeEvent(QResizeEvent *event);
     void get_from_menu_to_upload_window();
     void get_from_menu_to_analisys_window();
+    void get_from_upload_window_to_menu();
 
 private:
     SerializationClass serialization;
