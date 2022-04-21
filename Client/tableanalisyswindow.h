@@ -3,6 +3,10 @@
 
 #include <QWidget>
 #include <QResizeEvent>
+#include <QStandardItemModel>
+#include <QFileDialog>
+#include <QTableView>
+#include <QDebug>
 
 namespace Ui {
 class TableAnalisysWindow;
@@ -15,6 +19,7 @@ class TableAnalisysWindow : public QWidget
 public:
     explicit TableAnalisysWindow(QWidget *parent = nullptr);
     ~TableAnalisysWindow();
+    void createTabs(QStringList list_of_upload_file_path);
 private slots:
     void resizeEvent(QResizeEvent *event);
 

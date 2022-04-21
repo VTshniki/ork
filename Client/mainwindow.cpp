@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(menu, &Menu::send_to_analisys_window, this, &MainWindow::get_from_menu_to_analisys_window);
     connect(table_upload_window, &TableUploadWindow::send_to_main_window, this, &MainWindow::get_from_upload_window_to_menu);
     stack_widgets->setCurrentIndex(0);
+
 }
 
 MainWindow::~MainWindow()
@@ -61,6 +62,7 @@ void MainWindow::get_from_menu_to_upload_window()
 void MainWindow::get_from_menu_to_analisys_window()
 {
     stack_widgets->setCurrentIndex(3);
+    table_analisys_window->createTabs(this->table_upload_window->get_list_of_upload_file_path());
 }
 
 void MainWindow::get_from_upload_window_to_menu()
