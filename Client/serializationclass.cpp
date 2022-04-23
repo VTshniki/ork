@@ -34,6 +34,7 @@ void SerializationClass::upload_information()
 
     //загрузка информации об ранее добавленных файлах
     QFile file_list_of_upload_files_path("SavedTables\\listUploadedFilePaths.txt");
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8")); //изменения
     QString line, line2;
     if(file_list_of_upload_files_path.open(QFile::ReadOnly | QFile::Text)){
         while (!file_list_of_upload_files_path.atEnd())

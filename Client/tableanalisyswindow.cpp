@@ -6,6 +6,10 @@ TableAnalisysWindow::TableAnalisysWindow(QWidget *parent) :
     ui(new Ui::TableAnalisysWindow)
 {
     ui->setupUi(this);
+    frequently_used_functions= new AssistantClass();
+    ui->tabWidget->removeTab(0);
+    ui->tabWidget->removeTab(0);
+    ui->tabWidget->removeTab(1);
 }
 
 TableAnalisysWindow::~TableAnalisysWindow()
@@ -78,7 +82,7 @@ void TableAnalisysWindow::createTabs(QStringList list_of_upload_file_path){
         }
 
         //создание заголовка для вкладки
-        QString title = "Вкладка #***";
+        QString title = "Вкладка" + frequently_used_functions->name_selection(path);
         //добавление вкладки на виджет
         ui->tabWidget->addTab(tab, title);
     }

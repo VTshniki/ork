@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
@@ -34,19 +34,6 @@
     <attribute name="title">
      <string>Tab 1</string>
     </attribute>
-    <widget class="QPushButton" name="pushButton_2">
-     <property name="geometry">
-      <rect>
-       <x>1000</x>
-       <y>190</y>
-       <width>75</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>PushButton</string>
-     </property>
-    </widget>
    </widget>
   </widget>
   <widget class="QLabel" name="label">
@@ -86,8 +73,12 @@
       <height>30</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{font-size: 7px}</string>
+    </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Добавить 
+столбец</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_3">
@@ -99,8 +90,12 @@
       <height>30</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{font-size: 7px}</string>
+    </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Удалить 
+столбец</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_4">
@@ -112,8 +107,12 @@
       <height>30</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{font-size: 7px}</string>
+    </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Добавить 
+строку</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_5">
@@ -125,8 +124,12 @@
       <height>30</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{font-size: 7px}</string>
+    </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Удалить
+ строку</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_6">
@@ -138,8 +141,12 @@
       <height>30</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{font-size: 7px}</string>
+    </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Увеличить 
+текст</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_7">
@@ -151,8 +158,12 @@
       <height>30</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{font-size: 7px}</string>
+    </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Уменьшить 
+текст</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_8">
@@ -164,8 +175,12 @@
       <height>30</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{font-size: 7px}</string>
+    </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Сформировать 
+общую таблицу</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_9">
@@ -177,8 +192,12 @@
       <height>30</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{font-size: 7px}</string>
+    </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Удалить 
+текущую таблицу</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_10">
@@ -190,8 +209,11 @@
       <height>30</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{font-size: 7px}</string>
+    </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Сохранить все</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_11">
@@ -203,8 +225,12 @@
       <height>30</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{font-size: 7px}</string>
+    </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Сохранить текущую
+ таблицу</string>
     </property>
    </widget>
   </widget>

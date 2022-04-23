@@ -3,6 +3,8 @@
 
 #include <QDebug>
 #include <QDir>
+#include <QTextCodec>
+#include <QString>
 
 class SerializationClass
 {

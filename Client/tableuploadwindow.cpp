@@ -6,13 +6,13 @@ TableUploadWindow::TableUploadWindow(QWidget *parent) :
     ui(new Ui::TableUploadWindow)
 {
     ui->setupUi(this);
-    // Создаём модель данных для отображения таблицы из CSV файла
-    csvModel = new QStandardItemModel(this);
 
     connect(ui->file_names_list, SIGNAL(itemClicked(QListWidgetItem*)),
                 this, SLOT(on_item_is_clicked(QListWidgetItem*)));
 
     ui->file_names_list->setSelectionMode(QAbstractItemView::MultiSelection);
+
+    frequently_used_functions= new AssistantClass();
 }
 
 TableUploadWindow::~TableUploadWindow()
@@ -80,6 +80,7 @@ void TableUploadWindow::on_file_select_button_clicked()
     this->choose_files();
 }
 
+
 void TableUploadWindow::on_item_is_clicked(QListWidgetItem *item)
 {
     QString path = "";
@@ -90,56 +91,77 @@ void TableUploadWindow::on_item_is_clicked(QListWidgetItem *item)
             break;
         }
     }
-    //qDebug() << "item number " << number << " is selected"; // проверка на получение индекса выбранного файла
-    //qDebug() << path << " is selected"; // проверка выбранного файла
+    QFileInfo *file_check_format = new QFileInfo(path);
+    QString type = "." + file_check_format->suffix();
 
-    // Открываем файл из ресурсов. Вместо данного файла
-    // необходимо указывать путь к вашему требуемому файлу
-    QFile file(path);
-    if ( !file.open(QFile::ReadOnly | QFile::Text) ) {
-        //qDebug() << "File not exists";
-    }
-    else {
-        csvModel->clear();
-        int cur_line = 0;
-        int quantity_column = 1;
-        QStringList list;
-        QString word;
+    //".xls", ".xlsx", "xltx", ".ods", "ots", ".csv", ".pdf"
+    if(type == ".csv"){
+        int rowsCount = 0;
 
-        // Создаём поток для извлечения данных из файла
-        QTextStream in(&file);
-        // Считываем данные до конца файла
-        while (!in.atEnd())
-        {
-            QString line = in.readLine();
-            if(cur_line == 0){
-                for (int i = 0; i < line.length(); i++){
-                    if(line[i] == ';'){
-                        quantity_column++;
-                        list << word;
-                        word = "";
-                    }
-                    else{
-                        word += line[i];
-                    }
+        QFile file(path);
+        if (file.open(QFile::ReadOnly | QFile::Text)) {
+            ui->upload_files_tableView->clearFocus();
+            ui->upload_files_tableView->clearSpans();
+            ui->upload_files_tableView->clearMask();
+
+            // Создаём поток для извлечения данных из файла
+            QTextStream in(&file);
+            // Считываем данные до конца файла
+            while(!in.atEnd()){
+                csvModel = new QStringList(in.readLine().split(";"));
+
+                ui->upload_files_tableView->setRowCount(rowsCount);
+                ui->upload_files_tableView->setColumnCount(csvModel->size());
+
+                for(int col = 0; col < csvModel->size(); ++col){
+                    QTableWidgetItem *items= new QTableWidgetItem(csvModel->at(col));
+                    ui->upload_files_tableView->setItem((rowsCount - 1), col, items);
                 }
-                list << word;
-                csvModel->setColumnCount(quantity_column);
-                csvModel->setHorizontalHeaderLabels(list);
-                ui->upload_files_tableView->setModel(csvModel); // Устанавливаем модель в таблицу
+
+                rowsCount++;
+                delete csvModel;
             }
-            else{
-                // Добавляем в модель по строке с элементами
-                QList<QStandardItem *> standardItemsList;
-                // учитываем, что строка разделяется точкой с запятой на колонки
-                for (const QString &item : line.split(";")) {
-                    standardItemsList.append(new QStandardItem(item));
-                }
-                csvModel->insertRow(csvModel->rowCount(), standardItemsList);
-            }
-            cur_line ++;
         }
-        file.close();
+    }
+    if(type == ".xls" || type == ".xlsx" || type == ".xltx"){
+
+        QAxObject *excel = new QAxObject("Excel.Application", this);
+        QAxObject *workbooks = excel->querySubObject("Workbooks");
+        QAxObject *workbook = workbooks->querySubObject("Open(const QString&)", path);
+        excel->dynamicCall("SetVisible(bool)", false);
+
+        QAxObject *worksheet = workbook->querySubObject("WorkSheets(int)", 1);
+
+        QAxObject *usedrange = worksheet->querySubObject("UsedRange");
+        QAxObject *rows =usedrange->querySubObject("Rows");
+        QAxObject *columns = usedrange->querySubObject("Columns");
+
+        //int intRowStart = usedrange->property("Row").toInt();
+        //int intColStart = usedrange->property("Column").toInt();
+        int intCols = columns->property("Count").toInt();
+        int intRows = rows->property("Count").toInt();
+
+        ui->upload_files_tableView->setColumnCount(intCols);
+        ui->upload_files_tableView->setRowCount(intRows);
+
+        for(int row = 0; row < intRows; row++){
+            for(int col = 0; col < intCols; col++){
+                QAxObject *cell = worksheet->querySubObject("Cells(string, string)", row + 1, col +1);
+                QVariant value = cell->dynamicCall("Value()");
+                QTableWidgetItem *item = new QTableWidgetItem(value.toString());
+                ui->upload_files_tableView->setItem(row, col, item);
+                qDebug()<< row << " ; " << col << " ; " << item << " ; ";
+            }
+        }
+       workbook->dynamicCall("Close");
+       excel->dynamicCall("Quit()");
+       /*delete excel;
+       delete workbooks;
+       delete workbook;
+       delete worksheet;
+       delete usedrange;
+       delete rows;
+       delete columns;*/
     }
 }
 
@@ -160,7 +182,7 @@ void TableUploadWindow::add_lines(QStringList lines)
             if(isAlreadyExist){
                 if(this->check_in_list(lines[i])){
                     if(this->check_doc_format(lines[i])){
-                        ui->file_names_list->addItem(this->name_selection(lines[i]));
+                        ui->file_names_list->addItem(frequently_used_functions->name_selection(lines[i]));
                         this->list_of_upload_file_path << lines[i];
                         //qDebug() << lines; // для проверки пути файла
                     }
@@ -175,7 +197,7 @@ void TableUploadWindow::add_lines(QStringList lines)
                 }
                 else{
                     QMessageBox msg;
-                    msg.setText("Файл с таким путем загружен!\n"+lines[i]);
+                    msg.setText("Файл с таким именем загружен!\n"+lines[i]);
                     msg.setWindowTitle("Ошибка добавления");
                     msg.setIcon(QMessageBox::Information);
                     msg.setStandardButtons(QMessageBox::Ok);
@@ -190,26 +212,10 @@ QStringList TableUploadWindow::get_list_of_upload_file_path()
     return this->list_of_upload_file_path;
 }
 
-QString TableUploadWindow::name_selection(QString name)
-{
-    QString file_name = "", name2 = "";
-    for(int i = name.length()-1; i >= 0; i--){
-        if( name[i] == 92 || name[i] == 47){
-            break;
-        }
-        file_name += name[i];
-    }
-    /*for(int i = name2.length()-1; i >= 0; i--){
-        file_name += name2[i];
-    }*/
-    std::reverse(file_name.begin(), file_name.end());
-    return file_name;
-}
-
 bool TableUploadWindow::check_in_list(QString line)
 {
     for(int i = 0; i < this->list_of_upload_file_path.length(); i++){
-        if(line == this->list_of_upload_file_path[i]){
+        if(frequently_used_functions->name_selection(line) == frequently_used_functions->name_selection(this->list_of_upload_file_path[i])){
             return false;
         }
     }
@@ -227,7 +233,7 @@ void TableUploadWindow::set_last_path(QString path)
     bool check_slash = false;
     QString new_path = "";
 
-    for(int i = path.length(); i >= 0; i--){
+    for(int i = path.length()-1; i >= 0; i--){
         if( path[i] == 92 || path[i] == 47){
             check_slash = true;
         }
@@ -244,11 +250,13 @@ bool TableUploadWindow::check_doc_format(QString path)
 {
     QFileInfo *file = new QFileInfo(path);
     for(int i = 0; i < this->patterns_of_file_extention.length(); i++){
-        qDebug() << '.' + file->suffix();
+        //qDebug() << '.' + file->suffix();
         if(patterns_of_file_extention[i] == '.' + file->suffix()){
+            delete file;
             return true;
         }
     }
+    delete file;
     return false;
 }
 
@@ -261,7 +269,7 @@ void TableUploadWindow::add_saved_files()
 {
     for(int i = 0; i < this->list_of_upload_file_path.length(); i++){
         //qDebug() <<  this->list_of_upload_file_path[i];
-        ui->file_names_list->addItem(this->name_selection(this->list_of_upload_file_path[i]));
+        ui->file_names_list->addItem(frequently_used_functions->name_selection(this->list_of_upload_file_path[i]));
     }
 }
 
