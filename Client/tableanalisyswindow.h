@@ -7,7 +7,7 @@
 #include <QFileDialog>
 #include <QTableView>
 #include <QDebug>
-#include "AssistantClasss.h"
+#include "assistantclasss.h"
 
 namespace Ui {
 class TableAnalisysWindow;
@@ -26,7 +26,7 @@ private slots:
 
 private:
     Ui::TableAnalisysWindow *ui;
-    AssistantClass *frequently_used_functions;
+    AssistantClasss *frequently_used_functions;
 };
 
 #endif // TABLEANALISYSWINDOW_H

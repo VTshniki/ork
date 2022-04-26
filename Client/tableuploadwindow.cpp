@@ -12,7 +12,8 @@ TableUploadWindow::TableUploadWindow(QWidget *parent) :
 
     ui->file_names_list->setSelectionMode(QAbstractItemView::MultiSelection);
 
-    frequently_used_functions= new AssistantClass();
+    frequently_used_functions= new AssistantClasss();
+    summary_table = new QTableWidget();
 }
 
 TableUploadWindow::~TableUploadWindow()
@@ -109,7 +110,6 @@ void TableUploadWindow::on_item_is_clicked(QListWidgetItem *item)
             // Считываем данные до конца файла
             while(!in.atEnd()){
                 csvModel = new QStringList(in.readLine().split(";"));
-
                 ui->upload_files_tableView->setRowCount(rowsCount);
                 ui->upload_files_tableView->setColumnCount(csvModel->size());
 
@@ -133,35 +133,26 @@ void TableUploadWindow::on_item_is_clicked(QListWidgetItem *item)
         QAxObject *worksheet = workbook->querySubObject("WorkSheets(int)", 1);
 
         QAxObject *usedrange = worksheet->querySubObject("UsedRange");
-        QAxObject *rows =usedrange->querySubObject("Rows");
+        //QAxObject *rows =usedrange->querySubObject("Rows");
         QAxObject *columns = usedrange->querySubObject("Columns");
 
-        //int intRowStart = usedrange->property("Row").toInt();
-        //int intColStart = usedrange->property("Column").toInt();
         int intCols = columns->property("Count").toInt();
-        int intRows = rows->property("Count").toInt();
 
         ui->upload_files_tableView->setColumnCount(intCols);
-        ui->upload_files_tableView->setRowCount(intRows);
+        ui->upload_files_tableView->setRowCount(1);
 
-        for(int row = 0; row < intRows; row++){
-            for(int col = 0; col < intCols; col++){
-                QAxObject *cell = worksheet->querySubObject("Cells(string, string)", row + 1, col +1);
-                QVariant value = cell->dynamicCall("Value()");
-                QTableWidgetItem *item = new QTableWidgetItem(value.toString());
-                ui->upload_files_tableView->setItem(row, col, item);
-                qDebug()<< row << " ; " << col << " ; " << item << " ; ";
-            }
+        //Выбор орком нужных столбцов
+        for(int col = 0; col < intCols; col++){
+            QAxObject *cell = worksheet->querySubObject("Cells(string, string)", 1, col +1);
+            QVariant value = cell->dynamicCall("Value()");
+
+            QTableWidgetItem *item1 = new QTableWidgetItem(value.toString());
+            item1->setCheckState(Qt::Unchecked);
+            ui->upload_files_tableView->setItem(0, col, item1);
+            qDebug()<< 0 << " ; " << col << " ; " << item << " ; ";
         }
-       workbook->dynamicCall("Close");
-       excel->dynamicCall("Quit()");
-       /*delete excel;
-       delete workbooks;
-       delete workbook;
-       delete worksheet;
-       delete usedrange;
-       delete rows;
-       delete columns;*/
+        workbook->dynamicCall("Close");
+        excel->dynamicCall("Quit()");
     }
 }
 

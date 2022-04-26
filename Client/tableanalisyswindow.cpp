@@ -6,7 +6,7 @@ TableAnalisysWindow::TableAnalisysWindow(QWidget *parent) :
     ui(new Ui::TableAnalisysWindow)
 {
     ui->setupUi(this);
-    frequently_used_functions= new AssistantClass();
+    frequently_used_functions= new AssistantClasss();
     ui->tabWidget->removeTab(0);
     ui->tabWidget->removeTab(0);
     ui->tabWidget->removeTab(1);

@@ -14,7 +14,9 @@
 #include <QListWidgetItem>
 #include <QFileInfo>
 #include <QAxObject>
-#include "AssistantClasss.h"
+#include "assistantclasss.h"
+#include <QTableWidget>
+#include <QCheckBox>
 
 namespace Ui {
 class TableUploadWindow;
@@ -55,10 +57,12 @@ private:
     Ui::TableUploadWindow *ui;
     QString last_path = "C:\\";
     QStringList *csvModel;  // Указатель на модель данных, которая
-                                   // будет содержать данные из CSV файла
+                            // будет содержать данные из CSV файла
     QStringList list_of_upload_file_path; // список с путями к файлам ранее или только что загруженным
     const QStringList patterns_of_file_extention = {".xls", ".xlsx", "xltx", ".ods", "ots", ".csv", ".pdf"};
-    AssistantClass *frequently_used_functions;
+    AssistantClasss *frequently_used_functions;
+
+    QTableWidget *summary_table;
 };
 
 #endif // TABLEUPLOADWINDOW_H
