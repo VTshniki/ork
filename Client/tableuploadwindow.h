@@ -53,6 +53,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_save_button_clicked();
+
 private:
     Ui::TableUploadWindow *ui;
     QString last_path = "C:\\";
@@ -63,6 +65,8 @@ private:
     AssistantClasss *frequently_used_functions;
 
     QTableWidget *summary_table;
+
+    QList<QTableWidgetItem *> check_boxes_list;
 };
 
 #endif // TABLEUPLOADWINDOW_H

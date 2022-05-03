@@ -82,6 +82,7 @@ void TableUploadWindow::on_file_select_button_clicked()
 }
 
 
+
 void TableUploadWindow::on_item_is_clicked(QListWidgetItem *item)
 {
     QString path = "";
@@ -100,6 +101,7 @@ void TableUploadWindow::on_item_is_clicked(QListWidgetItem *item)
         int rowsCount = 0;
 
         QFile file(path);
+
         if (file.open(QFile::ReadOnly | QFile::Text)) {
             ui->upload_files_tableView->clearFocus();
             ui->upload_files_tableView->clearSpans();
@@ -150,7 +152,9 @@ void TableUploadWindow::on_item_is_clicked(QListWidgetItem *item)
             item1->setCheckState(Qt::Unchecked);
             ui->upload_files_tableView->setItem(0, col, item1);
             qDebug()<< 0 << " ; " << col << " ; " << item << " ; ";
+            check_boxes_list.push_back(item1);
         }
+
         workbook->dynamicCall("Close");
         excel->dynamicCall("Quit()");
     }
@@ -282,3 +286,17 @@ void TableUploadWindow::on_pushButton_clicked()
     emit send_to_main_window();
 }
 
+void TableUploadWindow::on_save_button_clicked()
+{
+    int count = 0;
+    QTableWidgetItem *item1;
+
+    for (int i = 0; i < check_boxes_list.size(); i++) {
+        item1 = check_boxes_list[i];
+        if(item1->checkState() != 0){
+            qDebug() << "#" << i;
+            count++;
+        }
+    }
+     qDebug() << "Общее количество выбранных checkBox'ов:" << count;
+}
