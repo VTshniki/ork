@@ -22,8 +22,11 @@
      <height>500</height>
     </rect>
    </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
@@ -46,7 +49,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Название окна</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Анализ таблиц&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QFrame" name="frame">
@@ -64,74 +67,6 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>75</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton{font-size: 7px}</string>
-    </property>
-    <property name="text">
-     <string>Добавить 
-столбец</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_3">
-    <property name="geometry">
-     <rect>
-      <x>75</x>
-      <y>0</y>
-      <width>75</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton{font-size: 7px}</string>
-    </property>
-    <property name="text">
-     <string>Удалить 
-столбец</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_4">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>0</y>
-      <width>75</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton{font-size: 7px}</string>
-    </property>
-    <property name="text">
-     <string>Добавить 
-строку</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_5">
-    <property name="geometry">
-     <rect>
-      <x>225</x>
-      <y>0</y>
-      <width>75</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton{font-size: 7px}</string>
-    </property>
-    <property name="text">
-     <string>Удалить
- строку</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton_6">
     <property name="geometry">
      <rect>
@@ -145,8 +80,7 @@
      <string notr="true">QPushButton{font-size: 7px}</string>
     </property>
     <property name="text">
-     <string>Увеличить 
-текст</string>
+     <string>Доп кнопка</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_7">
@@ -162,8 +96,7 @@
      <string notr="true">QPushButton{font-size: 7px}</string>
     </property>
     <property name="text">
-     <string>Уменьшить 
-текст</string>
+     <string>Доп кнопка</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_8">
@@ -174,6 +107,9 @@
       <width>75</width>
       <height>30</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Сформировать общую таблицу&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{font-size: 7px}</string>
@@ -192,11 +128,14 @@
       <height>30</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Отфильтровать текущую таблицу&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{font-size: 7px}</string>
     </property>
     <property name="text">
-     <string>Удалить 
+     <string>Отфильтровать
 текущую таблицу</string>
     </property>
    </widget>
@@ -209,11 +148,18 @@
       <height>30</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Начать распределение&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="whatsThis">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Начать\n распределение&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{font-size: 7px}</string>
     </property>
     <property name="text">
-     <string>Сохранить все</string>
+     <string>Начать
+ распределение</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_11">
@@ -225,6 +171,9 @@
       <height>30</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Сохранить текущую таблицу&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{font-size: 7px}</string>
     </property>
@@ -233,8 +182,107 @@
  таблицу</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>225</x>
+      <y>0</y>
+      <width>75</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{font-size: 7px}</string>
+    </property>
+    <property name="text">
+     <string>Удалить 
+столбец</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_4">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>75</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{font-size: 7px}</string>
+    </property>
+    <property name="text">
+     <string>Добавить 
+строку</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>0</y>
+      <width>75</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{font-size: 7px}</string>
+    </property>
+    <property name="text">
+     <string>Добавить 
+столбец</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_5">
+    <property name="geometry">
+     <rect>
+      <x>75</x>
+      <y>0</y>
+      <width>75</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{font-size: 7px}</string>
+    </property>
+    <property name="text">
+     <string>Удалить
+ строку</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>725</x>
+     <y>15</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Назад</string>
+   </property>
+  </widget>
+  <widget class="SortedWidgetInAnalisysWindow" name="sorted_widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>610</y>
+     <width>300</width>
+     <height>180</height>
+    </rect>
+   </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SortedWidgetInAnalisysWindow</class>
+   <extends>QWidget</extends>
+   <header>sortedwidgetinanalisyswindow.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

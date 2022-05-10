@@ -13,7 +13,6 @@ TableUploadWindow::TableUploadWindow(QWidget *parent) :
     ui->file_names_list->setSelectionMode(QAbstractItemView::MultiSelection);
 
     frequently_used_functions= new AssistantClasss();
-    summary_table = new QTableWidget();
 }
 
 TableUploadWindow::~TableUploadWindow()
@@ -96,9 +95,11 @@ void TableUploadWindow::on_item_is_clicked(QListWidgetItem *item)
     QFileInfo *file_check_format = new QFileInfo(path);
     QString type = "." + file_check_format->suffix();
 
+    path_for_upload_data_in_summary_table = path;
+
     //".xls", ".xlsx", "xltx", ".ods", "ots", ".csv", ".pdf"
+    check_boxes_list.clear();
     if(type == ".csv"){
-        int rowsCount = 0;
 
         QFile file(path);
 
@@ -108,21 +109,23 @@ void TableUploadWindow::on_item_is_clicked(QListWidgetItem *item)
             ui->upload_files_tableView->clearMask();
 
             // Создаём поток для извлечения данных из файла
+
             QTextStream in(&file);
-            // Считываем данные до конца файла
-            while(!in.atEnd()){
-                csvModel = new QStringList(in.readLine().split(";"));
-                ui->upload_files_tableView->setRowCount(rowsCount);
-                ui->upload_files_tableView->setColumnCount(csvModel->size());
+            csvModel = new QStringList(in.readLine().split(";"));
+            ui->upload_files_tableView->setRowCount(1);
+            ui->upload_files_tableView->setColumnCount(csvModel->size());
 
-                for(int col = 0; col < csvModel->size(); ++col){
-                    QTableWidgetItem *items= new QTableWidgetItem(csvModel->at(col));
-                    ui->upload_files_tableView->setItem((rowsCount - 1), col, items);
+            for(int col = 0; col < csvModel->size(); ++col){
+                QTableWidgetItem *items= new QTableWidgetItem(csvModel->at(col));
+                items->setCheckState(Qt::Unchecked);
+                if(items->text() == "Шифр" || items->text() == "Личный номер" || items->text() == "Зачетная книжка"){
+                    items->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
                 }
-
-                rowsCount++;
-                delete csvModel;
+                ui->upload_files_tableView->setItem(0, col, items);
+                //qDebug()<< 0 << " ; " << col << " ; " << items << " ; ";
+                check_boxes_list.push_back(items);
             }
+            delete csvModel;
         }
     }
     if(type == ".xls" || type == ".xlsx" || type == ".xltx"){
@@ -142,7 +145,6 @@ void TableUploadWindow::on_item_is_clicked(QListWidgetItem *item)
 
         ui->upload_files_tableView->setColumnCount(intCols);
         ui->upload_files_tableView->setRowCount(1);
-
         //Выбор орком нужных столбцов
         for(int col = 0; col < intCols; col++){
             QAxObject *cell = worksheet->querySubObject("Cells(string, string)", 1, col +1);
@@ -150,8 +152,11 @@ void TableUploadWindow::on_item_is_clicked(QListWidgetItem *item)
 
             QTableWidgetItem *item1 = new QTableWidgetItem(value.toString());
             item1->setCheckState(Qt::Unchecked);
+            if(item1->text() == "Шифр" || item1->text() == "Личный номер" || item1->text() == "Зачетная книжка"){
+                item1->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
+            }
             ui->upload_files_tableView->setItem(0, col, item1);
-            qDebug()<< 0 << " ; " << col << " ; " << item << " ; ";
+            //qDebug()<< 0 << " ; " << col << " ; " << item << " ; ";
             check_boxes_list.push_back(item1);
         }
 
@@ -255,6 +260,28 @@ bool TableUploadWindow::check_doc_format(QString path)
     return false;
 }
 
+QList<QString> TableUploadWindow::compareLists(QList<QString> mainList, QList<QString> helpList)
+{
+    for(int i = 0; i < helpList.length(); i++){
+            bool mainListAlreadyConsistElement = false;
+
+            for(int j = 0; j < mainList.length(); j++){
+                if(helpList[i] == mainList[j]){
+                    mainListAlreadyConsistElement = true;
+                    break;
+                }
+            }
+            if(mainListAlreadyConsistElement == false)
+                mainList.push_back(helpList[i]);
+        }
+    return mainList;
+}
+
+void TableUploadWindow::get_summary_table()
+{
+    emit send_summary_table(this->summary_table);
+}
+
 void TableUploadWindow::set_list_of_upload_file_path(QStringList list)
 {
     this->list_of_upload_file_path = list;
@@ -271,13 +298,14 @@ void TableUploadWindow::add_saved_files()
 void TableUploadWindow::resizeEvent(QResizeEvent *event)
 {
     if(event->size().width() < 1000){
-        this->ui->frame_2->resize(event->size().width()*0.5625, event->size().height()*0.85);
+        this->ui->frame_2->resize(event->size().width()*0.5625, 100);
     }
     else{
-        this->ui->frame_2->resize(event->size().width()*0.75, event->size().height()*0.8);
+        this->ui->frame_2->resize(event->size().width()*0.75, 100);
     }
     this->ui->upload_files_tableView->resize(this->ui->frame_2->size().width(), this->ui->frame_2->size().height());
-    this->ui->pushButton->move(20, 10);
+    this->ui->pushButton->move(270+this->ui->frame_2->size().width(), 10);
+    this->ui->progressBar->move(320+(this->ui->frame_2->size().width()-400)/2, 210);
 }
 
 
@@ -288,15 +316,140 @@ void TableUploadWindow::on_pushButton_clicked()
 
 void TableUploadWindow::on_save_button_clicked()
 {
-    int count = 0;
-    QTableWidgetItem *item1;
+    QTableWidgetItem *item1 = new QTableWidgetItem;
 
-    for (int i = 0; i < check_boxes_list.size(); i++) {
-        item1 = check_boxes_list[i];
-        if(item1->checkState() != 0){
-            qDebug() << "#" << i;
-            count++;
+    QFileInfo *file_check_format = new QFileInfo(path_for_upload_data_in_summary_table);
+    QString type = "." + file_check_format->suffix();
+
+    if(type == ".csv"){
+        QString key = "";
+
+        QFile file(path_for_upload_data_in_summary_table);
+
+        if (file.open(QFile::ReadOnly | QFile::Text)) {
+            // Создаём поток для извлечения данных из файла
+            QTextStream in(&file);
+            // Считываем данные до конца файла
+            while(!in.atEnd()){
+                csvModel = new QStringList(in.readLine().split(";"));
+                QStringList str_insert;
+
+                for (int i = 0; i < check_boxes_list.size(); i++) {
+                    item1 = check_boxes_list[i];
+                    if(item1->checkState() != 0){
+                        if(csvModel->at(i) != "")
+                            str_insert.push_back(csvModel->at(i));
+                        else
+                            str_insert.push_back(" ");
+                        //qDebug() << "#" << i << csvModel->at(i);
+                    }
+                    if(check_boxes_list[i]->text() == "Личный номер" || check_boxes_list[i]->text() == "Шифр" || check_boxes_list[i]->text() == "Зачетная книжка"){
+                        str_insert.push_front(csvModel->at(i));
+                    }
+                }
+
+                key = str_insert[0];
+                str_insert.pop_front();
+                if(summary_table.count(key) == 0){
+                    summary_table.insert(key, str_insert);
+                    //qDebug() << key << " " << str_insert;
+                }
+                else{
+                    QStringList main_list = summary_table[key];
+                    QMap <QString, QStringList> :: iterator dubl;
+                    dubl = summary_table.find(key);
+                    summary_table.erase(dubl);
+                    //summary_table[key] = compareLists(main_list, str_insert);
+                    summary_table.insert(key, compareLists(main_list, str_insert));
+                    //qDebug() << key << " " << compareLists(main_list, str_insert);
+                }
+                //qDebug() << key << " " << str_insert;
+                key = "";
+                str_insert.clear();
+                delete csvModel;
+            }
         }
     }
-     qDebug() << "Общее количество выбранных checkBox'ов:" << count;
+
+    if(type == ".xls" || type == ".xlsx" || type == ".xltx"){
+        QAxObject *excel = new QAxObject("Excel.Application", this);
+        QAxObject *workbooks = excel->querySubObject("Workbooks");
+        QAxObject *workbook = workbooks->querySubObject("Open(const QString&)", path_for_upload_data_in_summary_table);
+        excel->dynamicCall("SetVisible(bool)", false);
+
+        QAxObject *worksheet = workbook->querySubObject("WorkSheets(int)", 1);
+
+        QAxObject *usedrange = worksheet->querySubObject("UsedRange");
+        QAxObject *rows =usedrange->querySubObject("Rows");
+        QAxObject *columns = usedrange->querySubObject("Columns");
+
+        int intCols = columns->property("Count").toInt();
+        int intRows = rows->property("Count").toInt();
+
+        QMap <int, QStringList> qmap;
+        int shfr = 0, key_map = 0;
+
+        //Выбор нужных столбцов
+        for(int col = 0; col < intCols; col++){
+            QStringList str_insert;
+            item1 = check_boxes_list[col];
+            if(item1->checkState() != 0){
+                for(int row = 0; row < intRows; row++){
+                    QAxObject *cell = worksheet->querySubObject("Cells(string, string)", row+1, col+1);
+                    QVariant value = cell->dynamicCall("Value()");
+                    str_insert.push_back(value.toString());
+                }
+                qmap.insert(key_map, str_insert);
+                key_map++;
+            }
+            if(check_boxes_list[col]->text() == "Личный номер" || check_boxes_list[col]->text() == "Шифр" || check_boxes_list[col]->text() == "Зачетная книжка"){
+                for(int row = 0; row < intRows; row++){
+                    QAxObject *cell = worksheet->querySubObject("Cells(string, string)", row+1, col+1);
+                    QVariant value = cell->dynamicCall("Value()");
+                    str_insert.push_back(value.toString());
+                    /*if(value.toString( != " ")
+                        str_insert.push_back(value.toString());
+                    else
+                        str_insert.push_back(" ");*/
+                }
+                qmap.insert(key_map, str_insert);
+                shfr = key_map;
+                key_map++;
+            }
+        }
+        workbook->dynamicCall("Close");
+        excel->dynamicCall("Quit()");
+
+        QStringList str_list;
+        for(int i = 0; i < qmap[shfr].size(); i++){
+            if(summary_table.count(qmap[shfr][i]) == 0){
+                for(int j = 0; j < qmap.size(); j++){
+                    if(j != shfr){
+                        str_list.append(qmap[j][i]);
+                    }
+                }
+                summary_table.insert(qmap[shfr][i], str_list);
+                //qDebug() << qmap[shfr][i] << " " << str_list;
+                str_list.clear();
+            }
+            else{
+                QStringList help_list = summary_table[qmap[shfr][i]];
+                QMap <QString, QStringList> :: iterator dubl;
+                dubl = summary_table.find(qmap[shfr][i]);
+                summary_table.erase(dubl);
+                for(int j = 0; j < qmap.size(); j++){
+                    if(j != shfr){
+                        str_list.append(qmap[j][i]);
+                    }
+                }
+
+                //summary_table[qmap[shfr][i]]= compareLists(help_list, str_list);
+                summary_table.insert(qmap[shfr][i], compareLists(help_list, str_list));
+                //qDebug() << qmap[shfr][i] << " " << compareLists(help_list, str_list);
+                str_list.clear();
+            }
+        }
+    }
+
+     path_for_upload_data_in_summary_table = "";
 }

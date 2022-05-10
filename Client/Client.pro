@@ -15,6 +15,7 @@ SOURCES += \
     mainwindow.cpp \
     menu.cpp \
     serializationclass.cpp \
+    sortedwidgetinanalisyswindow.cpp \
     tableanalisyswindow.cpp \
     tableuploadwindow.cpp
 
@@ -24,6 +25,7 @@ HEADERS += \
     mainwindow.h \
     menu.h \
     serializationclass.h \
+    sortedwidgetinanalisyswindow.h \
     tableanalisyswindow.h \
     tableuploadwindow.h
 
@@ -31,6 +33,7 @@ FORMS += \
     authorization.ui \
     mainwindow.ui \
     menu.ui \
+    sortedwidgetinanalisyswindow.ui \
     tableanalisyswindow.ui \
     tableuploadwindow.ui
 

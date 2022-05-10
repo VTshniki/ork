@@ -3,9 +3,6 @@
 
 #include <QMainWindow>
 #include <QStackedWidget>
-#include <QResizeEvent>
-
-
 
 #include <authorization.h>
 #include <menu.h>
@@ -25,12 +22,16 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+signals:
+    void get_summary_table();
+
 public slots:
     void get_from_authorization_window();
-    void resizeEvent(QResizeEvent *event);
     void get_from_menu_to_upload_window();
     void get_from_menu_to_analisys_window();
+
     void get_from_upload_window_to_menu();
+    void get_from_analisys_window_to_menu();
 
 private:
     SerializationClass serialization;

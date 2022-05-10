@@ -17,6 +17,7 @@
 #include "assistantclasss.h"
 #include <QTableWidget>
 #include <QCheckBox>
+#include <QVector>
 
 namespace Ui {
 class TableUploadWindow;
@@ -39,11 +40,11 @@ public:
     QString get_last_path();
     void set_last_path(QString path);
     bool check_doc_format(QString path);
-
-    //ЗАп
+    QList<QString> compareLists(QList<QString> mainList, QList<QString> helpList);
 
 signals:
     void send_to_main_window();
+    void send_summary_table(QMap <QString, QStringList> qmap);
 
 private slots:
     void on_file_delete_button_clicked();
@@ -55,6 +56,9 @@ private slots:
 
     void on_save_button_clicked();
 
+public slots:
+    void get_summary_table();
+
 private:
     Ui::TableUploadWindow *ui;
     QString last_path = "C:\\";
@@ -64,7 +68,9 @@ private:
     const QStringList patterns_of_file_extention = {".xls", ".xlsx", "xltx", ".ods", "ots", ".csv", ".pdf"};
     AssistantClasss *frequently_used_functions;
 
-    QTableWidget *summary_table;
+    QString path_for_upload_data_in_summary_table;
+
+    QMap <QString, QStringList> summary_table;
 
     QList<QTableWidgetItem *> check_boxes_list;
 };
