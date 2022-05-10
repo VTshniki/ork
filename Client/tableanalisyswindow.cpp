@@ -115,6 +115,9 @@ void TableAnalisysWindow::createTabs(QStringList list_of_upload_file_path){
 //формирование сводной таблицы
 void TableAnalisysWindow::on_pushButton_8_clicked()
 {
+
+    numberOfTabs++;
+
     QStandardItemModel *csvModel = new QStandardItemModel;
     QList<QStandardItem *> standardItemsList;
     QTableView *tab = new QTableView;
