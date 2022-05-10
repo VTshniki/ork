@@ -43,6 +43,7 @@ public slots:
     void set_summary_table(QMap <QString, QStringList> qmap);
 
 private:
+    int numberOfTabs;
     Ui::TableAnalisysWindow *ui;
     AssistantClasss *frequently_used_functions;
 

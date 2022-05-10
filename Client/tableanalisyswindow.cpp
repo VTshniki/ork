@@ -47,6 +47,8 @@ void TableAnalisysWindow::set_summary_table(QMap<QString, QStringList> qmap)
 //Метод по созданию дополнительных вкладок
 void TableAnalisysWindow::createTabs(QStringList list_of_upload_file_path){
 
+    numberOfTabs = list_of_upload_file_path.length();
+
     for (int i = 0; i < list_of_upload_file_path.length(); i++) {
 
         QStandardItemModel *csvModel = new QStandardItemModel;
@@ -191,6 +193,10 @@ void TableAnalisysWindow::on_pushButton_8_clicked()
 
 void TableAnalisysWindow::on_pushButton_2_clicked()
 {
+    for (int i = 0; i < numberOfTabs; i++) {
+        this->ui->tabWidget->removeTab(0);
+    }
+
     emit send_to_main_window();
 }
 
